@@ -54,6 +54,8 @@ bool Central::isIncendioDuplicado(const Coordenada& local_fogo) {
 }
 
 void Central::apagarIncendio(DadosBombeiro* dados) {
+
+    // aqui ele apaga o fogo e diz que tá livre pro código
     dados->floresta->setTipo(dados->x, dados->y, TIPO_LIVRE);
 }
 
@@ -114,7 +116,13 @@ void* Central::rotinaBombeiro(void* arg) {
 
     sleep(2);
 
-    // agora pode chamar a função da Central corretamente
+    // dados->central porque rotinaBombeiro é static
+    // e não tem acesso ao 'this'. Então o ponteiro da Central
+    // é enviado dentro de DadosBombeiro para permitir chamar
+    // métodos da Central a partir da thread.
+    
+    //dados->central acessa os membros da struct 
+    //-> apagarIncendio chama o método
     dados->central->apagarIncendio(dados);
 
     delete dados;
