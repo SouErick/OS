@@ -42,7 +42,7 @@ public:
     bool incendioJaAtendido(const Coordenada& coord);
     bool isIncendioDuplicado(const Coordenada& local_fogo);
 
-    void apagarIncendio(DadosBombeiro* dados);
+    void removerIncendio(Coordenada c);
     void cicloDeVida();
 
     void RegistraLog(MensagemIncendio msg);
