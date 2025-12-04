@@ -105,8 +105,8 @@ void Central::spawnBombeiro(DadosBombeiro* dados) {
     pthread_create(&t, NULL, &Central::rotinaBombeiro, dados);
 
     // detach é usado porque o bombeiro é uma thread independente
-    // não usamos join pra dar o NULL pq a Central não pode ficar esperando o bombeiro terminar.
-    // quando a thread acabar, o detach limpa automaticamente os recursos.
+    // não usamos join pra dar o NULL pq a Central não pode ficar esperando o bombeiro terminar,
+    // quando a thread acabar, o detach limpa automaticamente os recursos
     pthread_detach(t);
 }
 
