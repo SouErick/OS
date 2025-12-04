@@ -22,6 +22,7 @@ private:
     static void* threadHelper(void* context);
     void cicloDeVida();
     void logarIncendio(MensagemIncendio msg);
+    void removerIncendio(Coordenada c);
     
     static void* rotinaBombeiro(void* arg); 
 
@@ -37,6 +38,7 @@ public:
 
 struct DadosBombeiro {
     Forest* floresta;
+    Central* central;
     int x, y;
 };
 

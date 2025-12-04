@@ -13,13 +13,13 @@ private:
     int x, y;
     Forest* floresta;
     Central* central;
-    pthread_t thread_id;
+    pthread_t thread_id; // Identificador da thread no sistema
     bool ativo;
 
     static Sensor* mapa_sensores[LINHA][COLUNA];
 
     void cicloDeVida();
-    static void* threadHelper(void* context);
+    static void* threadHelper(void* context); // funcao estática para pthread_create
     void propagarMensagem(MensagemIncendio msg);
     bool souBorda();
 

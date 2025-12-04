@@ -20,6 +20,16 @@ void Central::receberMensagem(MensagemIncendio msg) {
     fila_mensagens.push_back(msg);
     pthread_mutex_unlock(&mutex_fila);
 }
+void Central::removerIncendio(Coordenada c) {
+    pthread_mutex_lock(&mutex_fila);
+    for (auto it = incendios_atendidos.begin(); it != incendios_atendidos.end(); ++it) {
+        if (it->x == c.x && it->y == c.y) {
+            incendios_atendidos.erase(it);
+            break;
+        }
+    }
+    pthread_mutex_unlock(&mutex_fila);
+}
 
 void* Central::threadHelper(void* context) {
     ((Central*)context)->cicloDeVida();
@@ -34,6 +44,8 @@ void Central::iniciar() {
 void Central::aguardar() {
     pthread_join(thread_central, NULL);
 }
+
+
 
 void Central::cicloDeVida() {
     while (ativa) {
@@ -62,8 +74,8 @@ void Central::cicloDeVida() {
                 logarIncendio(msgAtual);
 
                 pthread_t t_bombeiro;
-                DadosBombeiro* dados = new DadosBombeiro{floresta, msgAtual.local_fogo.x, msgAtual.local_fogo.y};
-                
+                DadosBombeiro* dados = new DadosBombeiro{floresta, this, msgAtual.local_fogo.x, msgAtual.local_fogo.y}; 
+
                 pthread_create(&t_bombeiro, NULL, &Central::rotinaBombeiro, dados);
                 pthread_detach(t_bombeiro); 
             }
@@ -89,6 +101,9 @@ void* Central::rotinaBombeiro(void* arg) {
     
     sleep(2);
     dados->floresta->setTipo(dados->x, dados->y, TIPO_LIVRE);
+
+    Coordenada c = {dados->x, dados->y};
+    dados->central->removerIncendio(c);
 
     delete dados;
     return NULL;
